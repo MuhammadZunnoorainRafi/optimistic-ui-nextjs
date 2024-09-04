@@ -20,8 +20,13 @@ import {
   SelectValue,
 } from '../ui/select';
 import { Button } from '../ui/button';
+import { useTransition } from 'react';
+import { action_createProduct } from '@/actions/product/create-product';
+import { toast } from 'sonner';
 
 function ProductCard() {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<ProductType>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
@@ -32,7 +37,17 @@ function ProductCard() {
     },
   });
 
-  const formSubmit = (formData: ProductType) => {};
+  const formSubmit = (formData: ProductType) => {
+    startTransition(async () => {
+      const res = await action_createProduct(formData);
+      if (res.error) {
+        toast.error(res.error);
+      }
+      if (res.success) {
+        toast.success(res.success);
+      }
+    });
+  };
 
   return (
     <Card className="max-w-6xl mx-auto mt-4 mb-2">
