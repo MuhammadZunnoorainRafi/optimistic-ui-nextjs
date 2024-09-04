@@ -12,7 +12,7 @@ export const action_deleteProduct = async (productId: string) => {
 
   try {
     const deletedProduct = await db.product.delete({
-      where: { id: productId },
+      where: { id: productId, userId: user.id },
     });
     if (deletedProduct) {
       revalidatePath('/');

@@ -13,7 +13,7 @@ function ProductList({ products }: Props) {
       <CardHeader>
         <CardTitle>Products</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
+      <CardContent className="space-y-4">
         {products.map((product) => (
           <ProductItem key={product.id} product={product} />
         ))}
