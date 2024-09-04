@@ -8,7 +8,7 @@ import { ThemeToggle } from './ThemeToggle';
 async function Navbar() {
   const user = await getUserServer();
   return (
-    <div className="px-10 shadow-md py-5 flex items-center justify-between">
+    <div className="px-10 shadow-md py-2 flex items-center justify-between">
       <Link href="/" className="font-bold text-2xl">
         💿 Optimistic-UI
       </Link>
