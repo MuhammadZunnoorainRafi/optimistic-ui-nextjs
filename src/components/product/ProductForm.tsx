@@ -1,5 +1,13 @@
 'use client';
+import { action_createProduct } from '@/actions/product/create-product';
+import { ProductSchema } from '@/lib/schemas';
+import { ProductType } from '@/lib/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Product } from '@prisma/client';
+import { Dispatch, SetStateAction, useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import {
   Form,
@@ -8,9 +16,6 @@ import {
   FormItem,
   FormMessage,
 } from '../ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { ProductSchema } from '@/lib/schemas';
-import { ProductType } from '@/lib/types';
 import { Input } from '../ui/input';
 import {
   Select,
@@ -19,32 +24,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { Button } from '../ui/button';
-import { useTransition } from 'react';
-import { action_createProduct } from '@/actions/product/create-product';
-import { toast } from 'sonner';
+import { action_updateProduct } from '@/actions/product/update-product';
 
-function ProductCard() {
+type Props = {
+  product?: Product;
+  setIsEdit?: Dispatch<SetStateAction<boolean>>;
+};
+
+function ProductForm({ product, setIsEdit }: Props) {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ProductType>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      category: '',
-      stars: '',
+      title: product ? product.title : '',
+      description: product ? product.description : '',
+      category: product ? product.category : '',
+      stars: product ? product.stars : '',
+      price: product && product.price,
     },
   });
 
   const formSubmit = (formData: ProductType) => {
     startTransition(async () => {
-      const res = await action_createProduct(formData);
+      const res = await (product
+        ? action_updateProduct(product.id, formData)
+        : action_createProduct(formData));
       if (res.error) {
         toast.error(res.error);
       }
       if (res.success) {
+        setIsEdit && setIsEdit(false);
         toast.success(res.success);
+        form.reset();
       }
     });
   };
@@ -52,7 +64,9 @@ function ProductCard() {
   return (
     <Card className="max-w-6xl mx-auto mt-4 mb-2">
       <CardHeader className="py-1">
-        <CardTitle className="py-2">Create Product</CardTitle>
+        <CardTitle className="py-2">
+          {product ? 'Edit Product' : 'Create Product'}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -66,7 +80,12 @@ function ProductCard() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="text" placeholder="Title" {...field} />
+                    <Input
+                      disabled={isPending}
+                      type="text"
+                      placeholder="Title"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -78,7 +97,12 @@ function ProductCard() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="text" placeholder="Description" {...field} />
+                    <Input
+                      disabled={isPending}
+                      type="text"
+                      placeholder="Description"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -89,7 +113,11 @@ function ProductCard() {
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select
+                    disabled={isPending}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a category" />
@@ -110,10 +138,14 @@ function ProductCard() {
               name="stars"
               render={({ field }) => (
                 <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select
+                    disabled={isPending}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a category" />
+                        <SelectValue placeholder="Select start rating" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -134,13 +166,20 @@ function ProductCard() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="number" placeholder="Price" {...field} />
+                    <Input
+                      disabled={isPending}
+                      type="number"
+                      placeholder="Price"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button disabled={isPending} type="submit">
+              {product ? 'Update' : 'Submit'}
+            </Button>
           </form>
         </Form>
       </CardContent>
@@ -148,4 +187,4 @@ function ProductCard() {
   );
 }
 
-export default ProductCard;
+export default ProductForm;

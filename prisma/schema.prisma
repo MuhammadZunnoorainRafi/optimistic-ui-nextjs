@@ -24,7 +24,7 @@ model Product {
   userId      String
   title       String   @unique
   description String
-  price       Decimal
+  price       Int
   stars       String
   category    String
   createdAt   DateTime @default(now())

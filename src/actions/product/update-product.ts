@@ -6,7 +6,10 @@ import { ProductSchema } from '@/lib/schemas';
 import { ProductType } from '@/lib/types';
 import { revalidatePath } from 'next/cache';
 
-export const action_createProduct = async (formData: ProductType) => {
+export const action_updateProduct = async (
+  productId: string,
+  formData: ProductType
+) => {
   const user = await getUserServer();
   if (!user) {
     return { error: 'Unauthorized' };
@@ -18,14 +21,16 @@ export const action_createProduct = async (formData: ProductType) => {
   }
 
   try {
-    const newProduct = await db.product.create({
-      data: { userId: user.id, ...validation.data },
+    const updatedProduct = await db.product.update({
+      where: { id: productId, userId: user.id },
+      data: validation.data,
     });
-    if (newProduct) {
+
+    if (updatedProduct) {
       revalidatePath('/');
-      return { success: 'Product created!' };
+      return { success: 'Product is updated' };
     } else {
-      return { error: 'Product not created' };
+      return { error: 'Product is not updated' };
     }
   } catch (error) {
     console.log(error);

@@ -1,4 +1,4 @@
-import ProductCard from '@/components/product/ProductCard';
+import ProductForm from '@/components/product/ProductForm';
 import ProductList from '@/components/product/ProductList';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -6,12 +6,14 @@ import db from '@/lib/db';
 import { CodeIcon } from '@radix-ui/react-icons';
 
 export default async function Home() {
-  const products = await db.product.findMany();
+  const products = await db.product.findMany({
+    orderBy: { createdAt: 'desc' },
+  });
 
   return (
     <div>
       <div>
-        <ProductCard />
+        <ProductForm />
       </div>
       <Separator className="my-5" />
       <div className="grid grid-cols-5 px-4">
