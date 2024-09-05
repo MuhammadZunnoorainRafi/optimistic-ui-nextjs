@@ -4,6 +4,7 @@ import { getUserServer } from '@/hooks/getUserServert';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { ThemeToggle } from './ThemeToggle';
+import SearchBar from './SearchBar';
 
 async function Navbar() {
   const user = await getUserServer();
@@ -12,6 +13,10 @@ async function Navbar() {
       <Link href="/" className="font-bold text-2xl">
         💿 Optimistic-UI
       </Link>
+
+      <div>
+        <SearchBar />
+      </div>
 
       <div className="flex items-center justify-center gap-1">
         <ThemeToggle />

@@ -12,7 +12,11 @@ export default async function Home({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const currentPage = +(searchParams.page || 1);
-  const { products, pages } = await action_getProduct({ page: currentPage });
+  const search = searchParams.search?.toString();
+  const { products, pages } = await action_getProduct({
+    page: currentPage,
+    search,
+  });
 
   return (
     <div>
