@@ -6,6 +6,10 @@ import Footer from '@/components/shared/Footer';
 import Navbar from '@/components/shared/Navbar';
 import { ThemeProvider } from '@/lib/ThemeProvider';
 import { Toaster } from 'sonner';
+import ProductForm from '@/components/product/ProductForm';
+import { Separator } from '@/components/ui/separator';
+import { Suspense } from 'react';
+import Loading from './loading';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,7 +35,17 @@ export default function RootLayout({
           >
             <div className="flex flex-col justify-between min-h-screen bg-secondary">
               <Navbar />
-              <main className="flex-grow">{children}</main>
+              <ProductForm />
+              <Separator className="my-5" />
+              <div className="grid grid-cols-5 px-4 flex-grow">
+                <div className="col-span-1">left menu</div>
+                <div className="col-span-4 space-y-4">
+                  <Suspense fallback={<Loading />}>
+                    <main>{children}</main>
+                  </Suspense>
+                </div>
+              </div>
+
               <Footer />
             </div>
             <Toaster richColors />

@@ -16,7 +16,7 @@ function Pagination({ totalPages, currentPage }: Props) {
     totalPagesArr.push(i);
   }
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex items-center justify-center gap-2 mt-3">
       {totalPagesArr.map((val) => (
         <Button
           onClick={() => {

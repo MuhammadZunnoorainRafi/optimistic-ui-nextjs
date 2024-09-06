@@ -2,9 +2,10 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Product } from '@prisma/client';
 import ProductItem from './ProductItem';
+import { ProductWithLikes } from '@/lib/types';
 
 type Props = {
-  products: Product[];
+  products: ProductWithLikes[];
 };
 
 function ProductList({ products }: Props) {

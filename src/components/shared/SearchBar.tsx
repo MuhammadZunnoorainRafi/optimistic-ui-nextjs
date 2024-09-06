@@ -13,6 +13,8 @@ function SearchBar() {
       text.length > 0
         ? urlSearchParams.set('search', text)
         : urlSearchParams.delete('search');
+      text.length > 0 && urlSearchParams.set('page', '1');
+
       router.push('?' + urlSearchParams.toString());
     }, 400);
     return () => {

@@ -1,7 +1,9 @@
 'use client';
 import { Product } from '@prisma/client';
 import {
+  HeartFilledIcon,
   HeartIcon,
+  Pencil2Icon,
   ReloadIcon,
   SectionIcon,
   StarFilledIcon,
@@ -13,12 +15,16 @@ import { useState, useTransition } from 'react';
 import ProductForm from './ProductForm';
 import { action_deleteProduct } from '@/actions/product/delete-product';
 import { toast } from 'sonner';
+import { action_addLike } from '@/actions/like/add-like';
+import { ProductWithLikes } from '@/lib/types';
+import { useGetUserClient } from '@/hooks/getUserClient';
 
 type Props = {
-  product: Product;
+  product: ProductWithLikes;
 };
 
 function ProductItem({ product }: Props) {
+  const user = useGetUserClient();
   const [isEdit, setIsEdit] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -40,6 +46,13 @@ function ProductItem({ product }: Props) {
     });
   };
 
+  const likeClick = async () => {
+    const res = await action_addLike(product.id);
+    if (res?.error) {
+      toast.error(res.error);
+    }
+  };
+
   document.addEventListener('keydown', onKeyDown);
 
   if (isEdit) {
@@ -47,10 +60,7 @@ function ProductItem({ product }: Props) {
   }
 
   return (
-    <Card
-      className="flex items-center justify-between p-2"
-      onClick={() => !isPending && setIsEdit(true)}
-    >
+    <Card className="flex items-center justify-between p-2">
       <div className="flex-[0.4]">
         <h1 className="font-semibold">{product.title}</h1>
         <p className="text-sm text-slate-900">{product.description}</p>
@@ -69,10 +79,29 @@ function ProductItem({ product }: Props) {
         size="icon"
         variant="ghost"
         className="hover:cursor-pointer"
+        onClick={likeClick}
       >
         <div className="flex items-center justify-center gap-1">
-          <HeartIcon className="h-4 w-4 text-red-500" />
-          <p className="text-sm">0</p>
+          {product.Like.find(
+            (val) => val.userId === user?.id && val.productId === product.id
+          ) ? (
+            <HeartFilledIcon className="h-4 w-4 text-red-500" />
+          ) : (
+            <HeartIcon className="h-4 w-4 text-red-500" />
+          )}
+
+          <p className="text-sm">{product.Like.length}</p>
+        </div>
+      </Button>
+      <Button
+        asChild
+        size="icon"
+        variant="ghost"
+        className="hover:cursor-pointer"
+        onClick={() => !isPending && setIsEdit(true)}
+      >
+        <div className="flex items-center justify-center gap-1">
+          <Pencil2Icon className="h-4 w-4 " />
         </div>
       </Button>
       <Button
