@@ -40,7 +40,7 @@ export default function RootLayout({
               <ProductForm />
               <CloseFilters />
               <Separator className="my-5" />
-              <div className="grid grid-cols-5 px-4 flex-grow">
+              <div className="grid grid-cols-5 px-4 flex-grow gap-2">
                 <div className="col-span-1">
                   <Filters />
                 </div>

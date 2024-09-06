@@ -15,7 +15,6 @@ function CategoryFilter() {
   const searchParams = useSearchParams();
   const urlSearchParams = new URLSearchParams(searchParams);
   const category = searchParams.get('category');
-  const [defaultValue, setDefaultValue] = useState(category || undefined);
   const onValueChange = (val: string) => {
     urlSearchParams.set('category', val);
     router.push('?' + urlSearchParams);
