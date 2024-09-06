@@ -16,9 +16,10 @@ function CheckboxFilter() {
 
     if (selectedStars.length <= 0) {
       newUrlSearchParams.delete('stars');
+    } else {
+      newUrlSearchParams.set('stars', selectedStars.join('-'));
     }
 
-    newUrlSearchParams.set('stars', selectedStars.join('-'));
     router.push('?' + newUrlSearchParams);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStars, searchParams]);
@@ -26,6 +27,11 @@ function CheckboxFilter() {
   useEffect(() => {
     memoizedFunction();
   }, [memoizedFunction, searchParams]);
+  useEffect(() => {
+    if (searchParams.get('stars') === null) {
+      setSelectedStarts([]);
+    }
+  }, [searchParams]);
 
   return (
     <div className="space-y-1">

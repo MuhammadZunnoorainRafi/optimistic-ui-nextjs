@@ -13,10 +13,10 @@ function CloseFilters() {
         <button
           onClick={() => {
             newUrlSearchParams.delete('stars');
-            // newUrlSearchParams.delete('category');
-            // newUrlSearchParams.delete('page');
-            // newUrlSearchParams.delete('search');
-            router.push('/');
+            newUrlSearchParams.delete('category');
+            newUrlSearchParams.delete('page');
+            newUrlSearchParams.delete('search');
+            router.push('?' + newUrlSearchParams);
           }}
           className="px-3 py-1 rounded-md bg-slate-700 text-slate-50 flex items-center justify-center gap-3"
         >
