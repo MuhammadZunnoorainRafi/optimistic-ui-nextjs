@@ -7,14 +7,16 @@ type Query = {
   page?: number;
   search?: string;
   category?: string;
+  stars?: string[];
 };
 
 export const action_getProduct = async ({
   page = 1,
   search,
   category,
+  stars,
 }: Query) => {
-  const where = constructSearchQueries({ search, category });
+  const where = constructSearchQueries({ search, category, stars });
 
   page = page <= 0 ? 1 : search ? 1 : page;
   const limit = 3;

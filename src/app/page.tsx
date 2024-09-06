@@ -13,10 +13,12 @@ export default async function Home({
   const currentPage = +(searchParams.page || 1);
   const search = searchParams.search?.toString();
   const category = searchParams.category?.toString();
+  const stars = searchParams.stars?.toString().split('-');
   const { products, pages } = await action_getProduct({
     page: currentPage,
     search,
     category,
+    stars,
   });
 
   return (

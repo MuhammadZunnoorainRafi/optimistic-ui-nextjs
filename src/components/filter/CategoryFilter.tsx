@@ -13,18 +13,32 @@ const categoryFilter = [
 function CategoryFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const urlSearchParams = new URLSearchParams(searchParams);
-  const category = searchParams.get('category');
-  const onValueChange = (val: string) => {
-    urlSearchParams.set('category', val);
-    router.push('?' + urlSearchParams);
-  };
+  const [categoryState, setCategoryState] = useState(
+    searchParams.get('category') || ''
+  );
+
+  useEffect(() => {
+    if (!searchParams.get('category')) {
+      setCategoryState('');
+    }
+  }, [searchParams]);
+
+  const onValueChange = useCallback(
+    (val: string) => {
+      setCategoryState(val);
+      const urlSearchParams = new URLSearchParams(searchParams);
+      urlSearchParams.set('category', val);
+      router.push('?' + urlSearchParams);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [searchParams]
+  );
 
   return (
     <div className="space-y-1">
       <h1 className="font-bold">Category:</h1>
       <RadioGroup
-        value={category || ''}
+        value={categoryState}
         onValueChange={onValueChange}
         className="ml-6"
       >

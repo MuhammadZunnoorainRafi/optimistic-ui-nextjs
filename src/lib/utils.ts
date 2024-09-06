@@ -21,6 +21,11 @@ export const constructSearchQueries = (queryParams: any) => {
       category: { contains: queryParams.category },
     });
   }
+  if (queryParams.stars) {
+    where.AND.push({
+      stars: { in: queryParams.stars },
+    });
+  }
 
   return where;
 };
