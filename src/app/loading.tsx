@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import React from 'react';
 
 function Loading() {
-  const arr: number[] = new Array(3);
+  const arr = [1, 2, 3];
 
   return (
     <div>

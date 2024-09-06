@@ -1,20 +1,28 @@
 'use server';
 
 import db from '@/lib/db';
+import { constructSearchQueries } from '@/lib/utils';
 
 type Query = {
   page?: number;
   search?: string;
+  category?: string;
 };
 
-export const action_getProduct = async ({ page = 1, search }: Query) => {
+export const action_getProduct = async ({
+  page = 1,
+  search,
+  category,
+}: Query) => {
+  const where = constructSearchQueries({ search, category });
+
   page = page <= 0 ? 1 : search ? 1 : page;
   const limit = 3;
   const skip = (page - 1) * limit;
-  const totalProducts = await db.product.count();
+  const totalProducts = await db.product.count({ where });
   const pages = Math.ceil(totalProducts / limit);
   const products = await db.product.findMany({
-    where: { title: { contains: search, mode: 'insensitive' } },
+    where,
     include: { Like: true },
     orderBy: { createdAt: 'desc' },
     take: limit,

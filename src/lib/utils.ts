@@ -6,3 +6,21 @@ import { twMerge } from 'tailwind-merge';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const constructSearchQueries = (queryParams: any) => {
+  let where: any = { AND: [] };
+
+  if (queryParams.search) {
+    where.AND.push({
+      title: { contains: queryParams.search, mode: 'insensitive' },
+    });
+  }
+
+  if (queryParams.category) {
+    where.AND.push({
+      category: { contains: queryParams.category },
+    });
+  }
+
+  return where;
+};

@@ -10,6 +10,8 @@ import ProductForm from '@/components/product/ProductForm';
 import { Separator } from '@/components/ui/separator';
 import { Suspense } from 'react';
 import Loading from './loading';
+import Filters from '@/components/filter/Filters';
+import CloseFilters from '@/components/filter/CloseFilters';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -36,9 +38,12 @@ export default function RootLayout({
             <div className="flex flex-col justify-between min-h-screen bg-secondary">
               <Navbar />
               <ProductForm />
+              <CloseFilters />
               <Separator className="my-5" />
               <div className="grid grid-cols-5 px-4 flex-grow">
-                <div className="col-span-1">left menu</div>
+                <div className="col-span-1">
+                  <Filters />
+                </div>
                 <div className="col-span-4 space-y-4">
                   <Suspense fallback={<Loading />}>
                     <main>{children}</main>

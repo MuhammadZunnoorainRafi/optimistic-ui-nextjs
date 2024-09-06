@@ -29,6 +29,7 @@ function SearchBar() {
         onChange={(e) => setText(e.target.value)}
         type="text"
         placeholder="Search"
+        className=" bg-primary-foreground"
       />
     </div>
   );
