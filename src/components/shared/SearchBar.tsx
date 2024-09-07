@@ -8,9 +8,6 @@ function SearchBar() {
   const [text, setText] = useState(searchParams.get('search') || '');
   const router = useRouter();
   useEffect(() => {
-    if (!searchParams.get('search')) {
-      setText('');
-    }
     const urlSearchParams = new URLSearchParams(searchParams.toString());
     const timeout = setTimeout(() => {
       text.length > 0

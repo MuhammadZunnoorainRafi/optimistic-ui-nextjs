@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from '../ui/select';
 import { action_updateProduct } from '@/actions/product/update-product';
+import Editor from './Editor';
 
 type Props = {
   product?: Product;
@@ -41,7 +42,6 @@ function ProductForm({ product, setIsEdit }: Props) {
       description: product ? product.description : '',
       category: product ? product.category : '',
       stars: product ? product.stars : '',
-      price: product && product.price,
     },
   });
 
@@ -92,17 +92,13 @@ function ProductForm({ product, setIsEdit }: Props) {
               )}
             />
             <FormField
+              disabled={isPending}
               control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      disabled={isPending}
-                      type="text"
-                      placeholder="Description"
-                      {...field}
-                    />
+                    <Editor {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

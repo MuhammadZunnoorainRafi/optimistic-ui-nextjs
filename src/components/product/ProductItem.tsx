@@ -18,6 +18,7 @@ import { toast } from 'sonner';
 import { action_addLike } from '@/actions/like/add-like';
 import { ProductWithLikes } from '@/lib/types';
 import { useGetUserClient } from '@/hooks/getUserClient';
+import Preview from './Preview';
 
 type Props = {
   product: ProductWithLikes;
@@ -63,7 +64,7 @@ function ProductItem({ product }: Props) {
     <Card className="flex items-center justify-between p-2">
       <div className="flex-[0.4]">
         <h1 className="font-semibold">{product.title}</h1>
-        <p className="text-sm text-slate-900">{product.description}</p>
+        <Preview value={product.description} />
       </div>
       <div className="flex items-center justify-center gap-1 flex-[0.1]">
         <SectionIcon className="h-5 w-5" />
