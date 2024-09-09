@@ -2,12 +2,9 @@
 
 import { getUserServer } from '@/hooks/getUserServert';
 import db from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
-type Props = {
-  cartProductId: string;
-};
-
-export const action_removeFromCart = async ({ cartProductId }: Props) => {
+export const action_removeFromCart = async (cartProductId: string) => {
   const user = await getUserServer();
   if (!user) {
     return { error: 'Unauthorized' };
@@ -26,7 +23,7 @@ export const action_removeFromCart = async ({ cartProductId }: Props) => {
       return { error: 'Cart product not found' };
     }
 
-    if (existingCartProduct.quantity <= 0) {
+    if (existingCartProduct.quantity <= 1) {
       await db.cart.delete({ where: { id: existingCartProduct.id } });
     } else {
       await db.cart.update({
@@ -34,6 +31,7 @@ export const action_removeFromCart = async ({ cartProductId }: Props) => {
         data: { quantity: existingCartProduct.quantity - 1 },
       });
     }
+    revalidatePath('/');
   } catch (error) {
     console.log(error);
     return {

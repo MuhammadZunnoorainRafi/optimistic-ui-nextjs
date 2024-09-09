@@ -9,7 +9,7 @@ function CloseFilters() {
 
   return (
     <div className="flex items-center justify-center gap-3">
-      {
+      {searchParams.size > 0 && (
         <button
           onClick={() => {
             newUrlSearchParams.delete('stars');
@@ -23,7 +23,7 @@ function CloseFilters() {
           <p>Clear Filters</p>
           <p>X</p>
         </button>
-      }
+      )}
     </div>
   );
 }

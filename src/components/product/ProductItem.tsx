@@ -19,6 +19,7 @@ import { action_addLike } from '@/actions/like/add-like';
 import { ProductWithLikes } from '@/lib/types';
 import { useGetUserClient } from '@/hooks/getUserClient';
 import Preview from './Preview';
+import { action_addToCart } from '@/actions/cart/add-to-cart';
 
 type Props = {
   product: ProductWithLikes;
@@ -49,6 +50,13 @@ function ProductItem({ product }: Props) {
 
   const likeClick = async () => {
     const res = await action_addLike(product.id);
+    if (res?.error) {
+      toast.error(res.error);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    const res = await action_addToCart(product.id);
     if (res?.error) {
       toast.error(res.error);
     }
@@ -121,7 +129,10 @@ function ProductItem({ product }: Props) {
           )}
         </div>
       </Button>
-      <Button className="bg-blue-700 hover:bg-blue-600 flex-[0.1]">
+      <Button
+        onClick={handleAddToCart}
+        className="bg-blue-700 hover:bg-blue-600 flex-[0.1]"
+      >
         Add to Cart
       </Button>
     </Card>

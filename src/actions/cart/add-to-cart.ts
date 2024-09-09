@@ -2,12 +2,9 @@
 
 import { getUserServer } from '@/hooks/getUserServert';
 import db from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
-type Props = {
-  productId: string;
-};
-
-export const action_addToCart = async ({ productId }: Props) => {
+export const action_addToCart = async (productId: string) => {
   const user = await getUserServer();
   if (!user) {
     return { error: 'Unauthorized' };
@@ -31,6 +28,7 @@ export const action_addToCart = async ({ productId }: Props) => {
         data: { userId: user.id, productId: productId, quantity: 1 },
       });
     }
+    revalidatePath('/');
   } catch (error) {
     console.log(error);
     return { error: 'Internal Server Error' };

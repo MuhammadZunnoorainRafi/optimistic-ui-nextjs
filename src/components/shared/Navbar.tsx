@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import Link from 'next/link';
 import { ThemeToggle } from './ThemeToggle';
 import SearchBar from './SearchBar';
+import Cart from './Cart';
 
 async function Navbar() {
   const user = await getUserServer();
@@ -18,8 +19,9 @@ async function Navbar() {
         <SearchBar />
       </div>
 
-      <div className="flex items-center justify-center gap-1">
+      <div className="flex items-center justify-center gap-2">
         <ThemeToggle />
+        <Cart />
         <div>
           {user ? (
             <UserButton user={user} />
