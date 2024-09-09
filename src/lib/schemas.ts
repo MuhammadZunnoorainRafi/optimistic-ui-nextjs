@@ -23,7 +23,8 @@ export const ProductSchema = z.object({
   category: z.string().min(1, 'Category is required'),
   price: z.coerce
     .number({
-      invalid_type_error: 'Price is required',
+      invalid_type_error: 'Price must be in numbers',
+      required_error: 'Price is required',
     })
     .min(1, 'Price is required'),
   stars: z.string().min(1, 'Star is required'),

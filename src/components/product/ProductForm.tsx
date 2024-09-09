@@ -42,8 +42,10 @@ function ProductForm({ product, setIsEdit }: Props) {
       description: product ? product.description : '',
       category: product ? product.category : '',
       stars: product ? product.stars : '',
+      price: (product ? product.price : '') as any,
     },
   });
+  console.log(typeof form.getValues('price'));
 
   const formSubmit = (formData: ProductType) => {
     startTransition(async () => {
@@ -164,7 +166,6 @@ function ProductForm({ product, setIsEdit }: Props) {
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      type="number"
                       placeholder="Price"
                       {...field}
                     />
