@@ -26,20 +26,29 @@ function CartItem({ item }: Props) {
   };
 
   return (
-    <div className="flex items-center justify-between">
-      <h1 className="font-bold flex-[0.7]">{item.product.title}</h1>
-      <div className="flex items-center justify-center gap-1 flex-[0.3]">
-        <Button
-          className="rounded-full"
-          onClick={handleRemoveFromCart}
-          size="icon"
-        >
-          -
-        </Button>
-        <span>{item.quantity}</span>
-        <Button className="rounded-full" onClick={handleAddToCart} size="icon">
-          +
-        </Button>
+    <div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center justify-start gap-1 flex-[0.7]">
+          <h1 className="font-bold flex-[0.6] ">{item.product.title}</h1>
+          <p className="flex-[0.4]">${item.product.price}</p>
+        </div>
+        <div className="flex items-center justify-center gap-1 flex-[0.3]">
+          <Button
+            className="rounded-full"
+            onClick={handleRemoveFromCart}
+            size="icon"
+          >
+            -
+          </Button>
+          <span>{item.quantity}</span>
+          <Button
+            className="rounded-full"
+            onClick={handleAddToCart}
+            size="icon"
+          >
+            +
+          </Button>
+        </div>
       </div>
     </div>
   );

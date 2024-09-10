@@ -3,6 +3,7 @@ import ProductForm from '@/components/product/ProductForm';
 import ProductList from '@/components/product/ProductList';
 import Pagination from '@/components/shared/Pagination';
 import { Card } from '@/components/ui/card';
+import { ProductContextProvider } from '@/context/ProductContext';
 import { CodeIcon } from '@radix-ui/react-icons';
 
 export default async function Home({
@@ -22,7 +23,7 @@ export default async function Home({
   });
 
   return (
-    <div>
+    <ProductContextProvider products={products}>
       <div>
         {products.length === 0 ? (
           <Card className="flex flex-col items-center justify-center gap-3 text-slate-700">
@@ -30,12 +31,15 @@ export default async function Home({
             <h1>No Product found!</h1>
           </Card>
         ) : (
-          <ProductList products={products} />
+          <div>
+            <ProductForm />
+            <ProductList products={products} />
+          </div>
         )}
       </div>
       <div>
         <Pagination totalPages={pages} currentPage={currentPage} />
       </div>
-    </div>
+    </ProductContextProvider>
   );
 }

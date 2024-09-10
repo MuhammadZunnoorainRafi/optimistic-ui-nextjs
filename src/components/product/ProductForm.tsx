@@ -26,6 +26,7 @@ import {
 } from '../ui/select';
 import { action_updateProduct } from '@/actions/product/update-product';
 import Editor from './Editor';
+import { useProductContext } from '@/context/ProductContext';
 
 type Props = {
   product?: Product;
@@ -34,6 +35,7 @@ type Props = {
 
 function ProductForm({ product, setIsEdit }: Props) {
   const [isPending, startTransition] = useTransition();
+  const { setOptimisticProduct } = useProductContext();
 
   const form = useForm<ProductType>({
     resolver: zodResolver(ProductSchema),
@@ -45,10 +47,13 @@ function ProductForm({ product, setIsEdit }: Props) {
       price: (product ? product.price : '') as any,
     },
   });
-  console.log(typeof form.getValues('price'));
 
   const formSubmit = (formData: ProductType) => {
+    setIsEdit && setIsEdit(false);
     startTransition(async () => {
+      product
+        ? setOptimisticProduct({ type: 'UPDATE', payload: formData })
+        : setOptimisticProduct({ type: 'ADD', payload: formData });
       const res = await (product
         ? action_updateProduct(product.id, formData)
         : action_createProduct(formData));
@@ -56,7 +61,7 @@ function ProductForm({ product, setIsEdit }: Props) {
         toast.error(res.error);
       }
       if (res.success) {
-        setIsEdit && setIsEdit(false);
+        // setIsEdit && setIsEdit(false);
         toast.success(res.success);
         form.reset();
       }

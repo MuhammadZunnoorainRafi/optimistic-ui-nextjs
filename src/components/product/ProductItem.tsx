@@ -20,15 +20,16 @@ import { ProductWithLikes } from '@/lib/types';
 import { useGetUserClient } from '@/hooks/getUserClient';
 import Preview from './Preview';
 import { action_addToCart } from '@/actions/cart/add-to-cart';
+import { useProductContext } from '@/context/ProductContext';
 
 type Props = {
   product: ProductWithLikes;
 };
 
 function ProductItem({ product }: Props) {
-  const user = useGetUserClient();
   const [isEdit, setIsEdit] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const { setOptimisticProduct } = useProductContext();
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -38,6 +39,7 @@ function ProductItem({ product }: Props) {
 
   const deleteProduct = () => {
     startTransition(async () => {
+      setOptimisticProduct({ type: 'DELETE', payload: product });
       const res = await action_deleteProduct(product.id);
       if (res.error) {
         toast.error(res.error);
@@ -91,15 +93,15 @@ function ProductItem({ product }: Props) {
         onClick={likeClick}
       >
         <div className="flex items-center justify-center gap-1">
-          {product.Like.find(
+          {/* {product.Like.find(
             (val) => val.userId === user?.id && val.productId === product.id
           ) ? (
             <HeartFilledIcon className="h-4 w-4 text-red-500" />
           ) : (
             <HeartIcon className="h-4 w-4 text-red-500" />
-          )}
+          )} */}
 
-          <p className="text-sm">{product.Like.length}</p>
+          {/* <p className="text-sm">{product.Like.length}</p> */}
         </div>
       </Button>
       <Button

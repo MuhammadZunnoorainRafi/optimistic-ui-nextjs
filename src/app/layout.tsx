@@ -37,7 +37,7 @@ export default function RootLayout({
           >
             <div className="flex flex-col justify-between min-h-screen bg-secondary">
               <Navbar />
-              <ProductForm />
+              {/* <ProductForm /> */}
               <CloseFilters />
               <Separator className="my-5" />
               <div className="grid grid-cols-5 px-4 flex-grow gap-2">
