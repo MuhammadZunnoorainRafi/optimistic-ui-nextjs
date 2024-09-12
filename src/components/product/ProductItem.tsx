@@ -21,6 +21,7 @@ import { useGetUserClient } from '@/hooks/getUserClient';
 import Preview from './Preview';
 import { action_addToCart } from '@/actions/cart/add-to-cart';
 import { useProductContext } from '@/context/ProductContext';
+import { useCartContext } from '@/context/CartContext';
 
 type Props = {
   product: ProductWithLikes;
@@ -30,6 +31,7 @@ function ProductItem({ product }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [isPending, startTransition] = useTransition();
   const { setOptimisticProduct } = useProductContext();
+  const { setOptimisticCart } = useCartContext();
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -58,6 +60,14 @@ function ProductItem({ product }: Props) {
   };
 
   const handleAddToCart = async () => {
+    setOptimisticCart({
+      type: 'ADD',
+      payload: {
+        productId: product.id,
+        quantity: 1,
+        product: { title: product.title, price: product.price },
+      },
+    });
     const res = await action_addToCart(product.id);
     if (res?.error) {
       toast.error(res.error);

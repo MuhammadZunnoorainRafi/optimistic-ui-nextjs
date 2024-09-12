@@ -2,7 +2,7 @@
 import { ProductWithLikes } from '@/lib/types';
 import { createContext, ReactNode, useContext, useOptimistic } from 'react';
 
-type Action = {
+type ActionProduct = {
   type: 'ADD' | 'UPDATE' | 'DELETE';
   //   payload: ProductWithLikes;
   payload: any;
@@ -10,7 +10,7 @@ type Action = {
 
 type ProductContextType = {
   optimisticProduct: ProductWithLikes[];
-  setOptimisticProduct: (action: Action) => void;
+  setOptimisticProduct: (action: ActionProduct) => void;
 };
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -24,7 +24,7 @@ export const ProductContextProvider = ({
 }) => {
   const [optimisticProduct, setOptimisticProduct] = useOptimistic(
     products,
-    (state, action: Action) => {
+    (state, action: ActionProduct) => {
       switch (action.type) {
         case 'ADD': {
           return [action.payload, ...state];

@@ -5,26 +5,47 @@ import { Button } from '../ui/button';
 import { action_addToCart } from '@/actions/cart/add-to-cart';
 import { toast } from 'sonner';
 import { action_removeFromCart } from '@/actions/cart/remove-from-cart';
+import { useCartContext } from '@/context/CartContext';
 
 type Props = {
-  item: Cart & { product: Product };
+  item: Cart & {
+    product: {
+      title: string;
+      price: number;
+    };
+  };
 };
-
 function CartItem({ item }: Props) {
+  const { setOptimisticCart } = useCartContext();
   const handleAddToCart = async () => {
-    const res = await action_addToCart(item.product.id);
+    setOptimisticCart({
+      type: 'ADD',
+      payload: {
+        productId: item.productId,
+        quantity: 1,
+        product: { title: item.product.title, price: item.product.price },
+      },
+    });
+    const res = await action_addToCart(item.productId);
     if (res?.error) {
       toast.error(res.error);
     }
   };
 
   const handleRemoveFromCart = async () => {
+    setOptimisticCart({
+      type: 'REMOVE',
+      payload: {
+        productId: item.productId,
+        quantity: 1,
+        product: { title: item.product.title, price: item.product.price },
+      },
+    });
     const res = await action_removeFromCart(item.id);
     if (res?.error) {
       toast.error(res.error);
     }
   };
-
   return (
     <div>
       <div className="flex items-center justify-between">
