@@ -36,9 +36,11 @@ function CartModel() {
           <SheetDescription>
             {optimisticCart.length > 0 ? (
               <div className="space-y-2">
-                {optimisticCart.map((item) => (
-                  <CartItem key={item.id} item={item} />
-                ))}
+                {optimisticCart
+                  .filter((val) => val.quantity !== 0)
+                  .map((item) => (
+                    <CartItem key={item.id} item={item} />
+                  ))}
               </div>
             ) : (
               <p className="text-center pt-6">No item yet!</p>

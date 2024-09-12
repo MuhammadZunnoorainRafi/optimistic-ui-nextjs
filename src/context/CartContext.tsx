@@ -32,7 +32,7 @@ export const CartContextProvider = ({
         case 'ADD': {
           if (existingItem) {
             return state.map((item) =>
-              item.productId === action.payload.productId
+              item.productId === existingItem.productId
                 ? { ...item, quantity: item.quantity + 1 }
                 : item
             );
@@ -41,11 +41,18 @@ export const CartContextProvider = ({
           }
         }
         case 'REMOVE': {
-          return [
-            existingItem
-              ? { ...existingItem, quantity: existingItem.quantity - 1 }
-              : undefined,
-          ];
+          if (existingItem) {
+            return state.map((item) =>
+              item.productId === existingItem.productId
+                ? { ...existingItem, quantity: existingItem.quantity - 1 }
+                : item
+            );
+          }
+          // return [
+          //   existingItem
+          //     ? { ...existingItem, quantity: existingItem.quantity - 1 }
+          //     : undefined,
+          // ];
         }
         default: {
           return state;
