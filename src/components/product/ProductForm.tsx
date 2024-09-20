@@ -69,7 +69,7 @@ function ProductForm({ product, setIsEdit }: Props) {
   };
 
   return (
-    <Card className="max-w-6xl mx-auto mt-4 mb-2">
+    <Card className="max-w-6xl mx-auto mb-2">
       <CardHeader className="py-1">
         <CardTitle className="py-2">
           {product ? 'Edit Product' : 'Create Product'}

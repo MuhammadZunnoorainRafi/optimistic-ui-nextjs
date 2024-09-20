@@ -22,6 +22,10 @@ function CartModel() {
       await action_removeAllCartItems();
     });
   };
+  const totalPrice = optimisticCart.reduce(
+    (a, c) => a + c.product.price * c.quantity,
+    0
+  );
   return (
     <Sheet>
       <SheetTrigger className="relative">
@@ -46,14 +50,22 @@ function CartModel() {
               <p className="text-center pt-6">No item yet!</p>
             )}
             {optimisticCart.length > 0 && (
-              <Button
-                className="w-full"
-                variant="destructive"
-                disabled={isPending}
-                onClick={handleButton}
-              >
-                Remove All
-              </Button>
+              <div className="my-2 space-y-2">
+                <Button
+                  className="w-full "
+                  variant="destructive"
+                  disabled={isPending}
+                  onClick={handleButton}
+                >
+                  Remove All
+                </Button>
+                <Button className="w-full flex items-center justify-between">
+                  <span>Checkout</span>
+                  <span className="font-bold font-mono text-lg">
+                    ${totalPrice}
+                  </span>
+                </Button>
+              </div>
             )}
           </SheetDescription>
         </SheetHeader>

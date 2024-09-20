@@ -10,26 +10,28 @@ import Cart from './Cart';
 async function Navbar() {
   const user = await getUserServer();
   return (
-    <div className="px-10 shadow-md py-2 flex items-center justify-between">
-      <Link href="/" className="font-bold text-2xl">
-        💿 Optimistic-UI
-      </Link>
+    <div className="mb-10">
+      <div className="px-10 shadow-md py-2 flex items-center justify-between fixed inset-x-0 bg-black/40 backdrop-blur-sm ">
+        <Link href="/" className="font-bold text-2xl">
+          💿 Optimistic-UI
+        </Link>
 
-      <div>
-        <SearchBar />
-      </div>
-
-      <div className="flex items-center justify-center gap-2">
-        <ThemeToggle />
-        <Cart />
         <div>
-          {user ? (
-            <UserButton user={user} />
-          ) : (
-            <Button asChild>
-              <Link href="/auth/login">Login</Link>
-            </Button>
-          )}
+          <SearchBar />
+        </div>
+
+        <div className="flex items-center justify-center gap-2">
+          <ThemeToggle />
+          <Cart />
+          <div>
+            {user ? (
+              <UserButton user={user} />
+            ) : (
+              <Button asChild>
+                <Link href="/auth/login">Login</Link>
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>

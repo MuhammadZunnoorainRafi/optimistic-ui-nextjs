@@ -27,18 +27,19 @@ model User {
 }
 
 model Product {
-  id          String   @id @default(cuid())
+  id          String      @id @default(cuid())
   userId      String
-  title       String   @unique
+  title       String      @unique
   description String
   price       Int
   stars       String
   category    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id])
   Like        Like[]
   Cart        Cart[]
+  OrderItem   OrderItem[]
 }
 
 model Like {
@@ -64,4 +65,22 @@ model Cart {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([userId, productId])
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  isPaid    Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  OrderItem OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  quantity  Int
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
 }
