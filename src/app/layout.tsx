@@ -44,16 +44,10 @@ export default async function RootLayout({
                 {/* <ProductForm /> */}
                 <CloseFilters />
                 <Separator className="my-5" />
-                <div className="grid grid-cols-6 px-4 flex-grow gap-2">
-                  <div className="col-span-1">
-                    <Filters />
-                  </div>
-                  <div className="col-span-5 space-y-4">
-                    <Suspense fallback={<Loading />}>
-                      <main>{children}</main>
-                    </Suspense>
-                  </div>
-                </div>
+
+                <Suspense fallback={<Loading />}>
+                  <main>{children}</main>
+                </Suspense>
 
                 <Footer />
               </div>

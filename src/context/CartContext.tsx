@@ -48,11 +48,6 @@ export const CartContextProvider = ({
                 : item
             );
           }
-          // return [
-          //   existingItem
-          //     ? { ...existingItem, quantity: existingItem.quantity - 1 }
-          //     : undefined,
-          // ];
         }
         default: {
           return state;

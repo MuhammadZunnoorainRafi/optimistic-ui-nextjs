@@ -1,6 +1,7 @@
 'use server';
 
 import db from '@/lib/db';
+import { Stripe } from 'stripe';
 
 type Cart = {
   name: string;
@@ -8,6 +9,8 @@ type Cart = {
   quantity: number;
   price: number;
 };
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 export const action_createOrder = async (cart: Cart[]) => {
   if (cart.length === 0) {
@@ -40,6 +43,17 @@ export const action_createOrder = async (cart: Cart[]) => {
       },
       quantity: item.quantity,
     }));
+
+    const stripeSession = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: formattedOrderItems,
+      mode: 'payment',
+
+      success_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/success/${newOrder.id}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/cancel`,
+    });
+
+    return { result: stripeSession.url };
   } catch (error) {
     console.log(error);
     return { error: 'Internal Server Error' };

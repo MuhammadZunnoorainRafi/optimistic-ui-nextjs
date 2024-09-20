@@ -1,4 +1,4 @@
-import { ExitIcon } from '@radix-ui/react-icons';
+import { ExitIcon, LayersIcon } from '@radix-ui/react-icons';
 import { User } from 'next-auth';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import LogoutButton from './LogoutButton';
+import Link from 'next/link';
 
 async function UserButton({ user }: { user: User }) {
   return (
@@ -20,7 +21,13 @@ async function UserButton({ user }: { user: User }) {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-32 " align="end">
+      <DropdownMenuContent className="w-44 " align="end">
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href="/order-history" className="flex items-center justify-">
+            <LayersIcon className="w-4 h-4 mr-2" />
+            Order History
+          </Link>
+        </DropdownMenuItem>
         <LogoutButton>
           <DropdownMenuItem className="cursor-pointer">
             <ExitIcon className="w-4 h-4 mr-2" />

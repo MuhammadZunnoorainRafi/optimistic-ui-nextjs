@@ -12,11 +12,16 @@ import {
 import CartItem from './CartItem';
 import { Button } from '../ui/button';
 import { action_removeAllCartItems } from '@/actions/cart/remove-all-cart-items';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
+import { toast } from 'sonner';
+import { action_createOrder } from '@/actions/order/create-order';
+import { useRouter } from 'next/navigation';
 
 function CartModel() {
   const { optimisticCart, cartProductsSize } = useCartContext();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState(false);
   const handleButton = () => {
     startTransition(async () => {
       await action_removeAllCartItems();
@@ -26,6 +31,26 @@ function CartModel() {
     (a, c) => a + c.product.price * c.quantity,
     0
   );
+
+  const handleCheckout = async () => {
+    setIsLoading(true);
+    const res = await action_createOrder(
+      optimisticCart.map((item) => ({
+        quantity: item.quantity,
+        productId: item.productId,
+        price: item.product.price,
+        name: item.product.title,
+      }))
+    );
+    if (res.result) {
+      router.push(res.result);
+    }
+    if (res.error) {
+      toast.error(res.error);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <Sheet>
       <SheetTrigger className="relative">
@@ -59,8 +84,12 @@ function CartModel() {
                 >
                   Remove All
                 </Button>
-                <Button className="w-full flex items-center justify-between">
-                  <span>Checkout</span>
+                <Button
+                  disabled={isLoading}
+                  onClick={handleCheckout}
+                  className="w-full flex items-center justify-between"
+                >
+                  <span>{isLoading ? '...' : 'Checkout'}</span>
                   <span className="font-bold font-mono text-lg">
                     ${totalPrice}
                   </span>

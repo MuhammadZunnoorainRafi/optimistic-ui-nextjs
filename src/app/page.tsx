@@ -1,4 +1,5 @@
 import { action_getProduct } from '@/actions/product/get-product';
+import Filters from '@/components/filter/Filters';
 import ProductForm from '@/components/product/ProductForm';
 import ProductList from '@/components/product/ProductList';
 import Pagination from '@/components/shared/Pagination';
@@ -31,9 +32,14 @@ export default async function Home({
             <h1>No Product found!</h1>
           </Card>
         ) : (
-          <div>
-            <ProductForm />
-            <ProductList products={products} />
+          <div className="grid grid-cols-6 px-4 flex-grow gap-2">
+            <div className="col-span-1">
+              <Filters />
+            </div>
+            <div className="col-span-5 space-y-4">
+              <ProductForm />
+              <ProductList products={products} />
+            </div>
           </div>
         )}
       </div>
