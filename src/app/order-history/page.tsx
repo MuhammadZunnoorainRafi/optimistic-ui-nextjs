@@ -4,9 +4,9 @@ import React from 'react';
 async function OrderHistory() {
   const orderData = await db.order.findMany({
     where: { isPaid: true },
+    orderBy: { createdAt: 'desc' },
     include: { OrderItem: { include: { product: true } } },
   });
-
   if (orderData.length === 0) {
     return (
       <h1 className="text-center font-bold text-3xl text-slate-100 mt-40">
@@ -17,8 +17,8 @@ async function OrderHistory() {
 
   return (
     <div>
-      <h1 className="font-bold text-2xl text-center">Order History</h1>
-      <table className="w-full text-center">
+      <h1 className="font-bold text-2xl text-center mb-3">Order History</h1>
+      <table className="w-full text-center border border-slate-500 p-4">
         <thead>
           <tr>
             <th>Id</th>

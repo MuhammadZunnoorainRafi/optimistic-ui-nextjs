@@ -43,11 +43,13 @@ function CartModel() {
       }))
     );
     if (res.result) {
+      await action_removeAllCartItems();
       router.push(res.result);
     }
     if (res.error) {
       toast.error(res.error);
     }
+
     setIsLoading(false);
   };
 
@@ -89,7 +91,7 @@ function CartModel() {
                   onClick={handleCheckout}
                   className="w-full flex items-center justify-between"
                 >
-                  <span>{isLoading ? '...' : 'Checkout'}</span>
+                  <span>{isLoading ? 'Loading...' : 'Checkout'}</span>
                   <span className="font-bold font-mono text-lg">
                     ${totalPrice}
                   </span>

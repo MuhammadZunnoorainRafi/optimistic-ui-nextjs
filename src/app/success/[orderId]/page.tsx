@@ -1,5 +1,6 @@
 'use client';
 
+import { action_removeAllCartItems } from '@/actions/cart/remove-all-cart-items';
 import { action_updateOrderStatus } from '@/actions/order/update-order';
 import { ColorWheelIcon, SketchLogoIcon } from '@radix-ui/react-icons';
 import { useParams, useRouter } from 'next/navigation';

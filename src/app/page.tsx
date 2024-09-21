@@ -32,14 +32,9 @@ export default async function Home({
             <h1>No Product found!</h1>
           </Card>
         ) : (
-          <div className="grid grid-cols-6 px-4 flex-grow gap-2">
-            <div className="col-span-1">
-              <Filters />
-            </div>
-            <div className="col-span-5 space-y-4">
-              <ProductForm />
-              <ProductList products={products} />
-            </div>
+          <div>
+            <ProductForm />
+            <ProductList products={products} />
           </div>
         )}
       </div>

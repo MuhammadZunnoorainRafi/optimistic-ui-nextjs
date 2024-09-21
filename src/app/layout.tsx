@@ -41,13 +41,19 @@ export default async function RootLayout({
             <CartContextProvider cart={cartItems}>
               <div className="flex flex-col justify-between min-h-screen bg-secondary">
                 <Navbar />
-                {/* <ProductForm /> */}
                 <CloseFilters />
                 <Separator className="my-5" />
 
-                <Suspense fallback={<Loading />}>
-                  <main>{children}</main>
-                </Suspense>
+                <div className="grid grid-cols-6 px-4 flex-grow gap-2">
+                  <div className="col-span-1">
+                    <Filters />
+                  </div>
+                  <div className="col-span-5 space-y-4">
+                    <Suspense fallback={<Loading />}>
+                      <main>{children}</main>
+                    </Suspense>
+                  </div>
+                </div>
 
                 <Footer />
               </div>
