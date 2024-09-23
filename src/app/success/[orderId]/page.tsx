@@ -17,15 +17,21 @@ function OrderSuccessPage() {
   const router = useRouter();
 
   useEffect(() => {
+    action_removeAllCartItems();
+  }, []);
+
+  useEffect(() => {
     setIsLoading(true);
-    const updateOrderStatus = async () => {
-      const res = await action_updateOrderStatus(param.orderId);
-      if (res?.error) {
-        toast.error(res.error);
-        router.push('/error');
-      }
-    };
-    updateOrderStatus();
+    if (param.orderId) {
+      const updateOrderStatus = async () => {
+        const res = await action_updateOrderStatus(param.orderId);
+        if (res?.error) {
+          toast.error(res.error);
+          router.push('/error');
+        }
+      };
+      updateOrderStatus();
+    }
     setIsLoading(false);
   }, [param.orderId, router]);
 

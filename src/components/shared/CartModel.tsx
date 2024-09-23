@@ -43,7 +43,6 @@ function CartModel() {
       }))
     );
     if (res.result) {
-      await action_removeAllCartItems();
       router.push(res.result);
     }
     if (res.error) {
