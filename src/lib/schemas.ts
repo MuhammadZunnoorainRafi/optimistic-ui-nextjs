@@ -28,5 +28,4 @@ export const ProductSchema = z.object({
     })
     .min(1, 'Price is required'),
   stars: z.string().min(1, 'Star is required'),
-  image: z.instanceof(FileList, { message: 'Select image' }),
 });

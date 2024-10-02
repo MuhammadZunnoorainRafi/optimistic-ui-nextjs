@@ -24,6 +24,7 @@ model User {
   product   Product[]
   Like      Like[]
   Cart      Cart[]
+  Images    Images[]
 }
 
 model Product {
@@ -82,5 +83,13 @@ model OrderItem {
   productId String
   product   Product @relation(fields: [productId], references: [id])
 
+  createdAt DateTime @default(now())
+}
+
+model Images {
+  id        String   @id @default(cuid())
+  images    String[]
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
