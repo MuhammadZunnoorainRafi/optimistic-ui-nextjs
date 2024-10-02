@@ -2,8 +2,18 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Checkbox } from '../ui/checkbox';
 import { useRouter, useSearchParams } from 'next/navigation';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 
 let checkboxList = ['5', '4', '3', '2', '1'];
+let fruits = ['apple', 'banana', 'mango', 'orange'];
 
 function CheckboxFilter() {
   const searchParams = useSearchParams();
@@ -11,9 +21,8 @@ function CheckboxFilter() {
   const [selectedStars, setSelectedStarts] = useState<string[]>(
     searchParams.get('stars')?.split('-') || []
   );
+  const newUrlSearchParams = new URLSearchParams(searchParams);
   const memoizedFunction = useCallback(() => {
-    const newUrlSearchParams = new URLSearchParams(searchParams);
-
     if (selectedStars.length <= 0) {
       newUrlSearchParams.delete('stars');
     } else {
@@ -57,6 +66,26 @@ function CheckboxFilter() {
           </div>
         ))}
       </div>
+      <Select
+        onValueChange={(val) => {
+          newUrlSearchParams.set('fruits', val);
+          router.push('?' + newUrlSearchParams);
+        }}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select a fruit" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Fruits</SelectLabel>
+            {fruits.map((val) => (
+              <SelectItem key={val} value={val}>
+                {val}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </div>
   );
 }
